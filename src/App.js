@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React, { useState } from 'react';
+import { Canvas } from '@react-three/fiber';
+import FaceMesh from './FaceMesh';
+import { OrbitControls } from '@react-three/drei';
+import LipColor from './LipColor';
 
-function App() {
+const App = () => {
+  const [predictions, setPredictions] = useState([]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <FaceMesh onResults={setPredictions} />
+      <Canvas>
+        <OrbitControls />
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 10, 10]} />
+        {predictions.map((prediction, index) => (
+          <LipColor key={index} prediction={prediction} />
+        ))}
+      </Canvas>
     </div>
   );
-}
+};
 
 export default App;
